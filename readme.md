@@ -4,8 +4,10 @@ Reads font files and oproduces an html file which can be printed to document the
 ![](demo.png)
 
 ## Install
-If node.js installes run npm install in the directory
+If node.js installed run *npm install* in the directory
 
 ## Run
-Call node.js with path to font file as parameter and pipe the output into the target html file, see run.sh
+Call node.js with path to font file as parameter and pipe the output into the target html file, see *run.sh*
 
+## Sample
+[grg.html sample included](http://htmlpreview.github.io/?https://raw.githubusercontent.com/jrgdrs/GlyphAtlas/blob/main/grg.html)
