@@ -6,7 +6,7 @@ var filename = 'grg.otf'
 filename = process.argv[2]
 
 const htmlPre =
-  "<html> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> </head> <body> <style> body { background: rgb(204, 204, 204); font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 2em; } page[size='A4'] { background: white; width: 21cm; height: 29.7cm; display: block; margin: 0 auto; margin-bottom: 0.5cm; border: 0; padding: 0; } @media screen { page { box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5); } } @media print { body, page[size='A4'] { margin: 0; border: 0; padding: 0; box-shadow: 0; } } .foldmark { position: relative; width: 6mm; left: 7mm; top: 140mm; border-top: 1pt solid black; } .foldmark { position: relative; width: 6mm; height: 0; left: 7mm; top: 140mm; border-top: 1pt solid black; } .source { transform: rotate(90deg); font-size: 6pt;} .mirror { position: relative; max-width: 180mm; left: 20mm; top: 10mm; margin: 0; border: .5pt solid black; padding: 0; } .headbox { position: relative; _width: 100%; height: 8mm; border: .5pt solid black; text-align: center; } .bodybox { position: relative; _width: 100%; height: 23cm; border: .5pt solid black; display: grid; 3 justify-items: center; 4 align-items: center; } .drawing { margin: auto; } .footbox { position: relative; _max-width: 180.5mm; background-color: white; _border: .5pt solid black; _border-top: 0; display: flex; flex-wrap: wrap; } .footcase { height: 8mm; width: 58mm; background-color: white; border: .5pt solid black; text-align: center; overflow: hidden; flex-grow: 1; flex-shrink: 1; } svg { _border: 1pt solid red; width: 178mm; height: 228mm; } .pGlyph { fill: black; fill-opacity: .12; stroke: black; stroke-width: 1 pt; } </style>"
+  "<html> <head> <meta charset='utf-8'> <meta name='viewport' content='width=device-width, initial-scale=1.0'> </head> <body> <style> body { background: rgb(204, 204, 204); font-family: Arial, Helvetica, sans-serif; font-size: 10pt; line-height: 2em; } page[size='A4'] { background: white; width: 21cm; height: 29.7cm; display: block; margin: 0 auto; margin-bottom: 0.5cm; border: 0; padding: 0; } @media screen { page { box-shadow: 0 0 0.5cm rgba(0, 0, 0, 0.5); } } @media print { body, page[size='A4'] { margin: 0; border: 0; padding: 0; box-shadow: 0; } } .foldmark { position: relative; width: 6mm; left: 7mm; top: 140mm; border-top: 1pt solid black; } .foldmark { position: relative; width: 6mm; height: 0; left: 7mm; top: 140mm; border-top: 1pt solid black; } .source { transform: rotate(90deg); font-size: 6pt;} .mirror { position: relative; max-width: 180mm; left: 20mm; top: 10mm; margin: 0; border: .5pt solid black; padding: 0; } .headbox { position: relative; _width: 100%; height: 8mm; border: .5pt solid black; text-align: center; } .bodybox { position: relative; _width: 100%; height: 23cm; border: .5pt solid black; display: grid; 3 justify-items: center; 4 align-items: center; } .drawing { margin: auto; } .footbox { position: relative; _max-width: 180.5mm; background-color: white; _border: .5pt solid black; _border-top: 0; display: flex; flex-wrap: wrap; } .footcase { height: 8mm; width: 58mm; background-color: white; border: .5pt solid black; text-align: center; overflow: hidden; flex-grow: 1; flex-shrink: 1; } svg { _border: 1pt solid red; width: 178mm; height: 228mm; } .pGlyph { fill: black; fill-opacity: .12; stroke: black; stroke-width: 1 pt; } .pCadence { fill: red; fill-opacity: .3; stroke: none;  } </style>"
 const svgPre =
   "<page size='A4'> <div class='foldmark'><p class='source'>github.com/jrgdrs/GlyphAtlas</p></div> <div class='mirror'> <div class='headbox'>((filename))</div> <div class='bodybox'> <div class='drawing'> <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='((bbox))'> <g id='/Letters'>"
 const svgPost =
@@ -103,6 +103,8 @@ const htmlPost = '</body></html>';
         // LSB RSB
         var myBearingString = '<path class="pCross" d="' + getMyCross( 0, ascender ) + getMyCross( glyphW, ascender ) + '"/>\r\n'
 
+        //Cadence
+        var myCadenceString = '<path class="pCadence" d="' + getGutter( 0, glyphW, 17.5 )  + '"/>\r\n'
 
         //Marker
         var myOut = ''
@@ -144,6 +146,7 @@ const htmlPost = '</body></html>';
           //myMetricString +
           myGlyphString +
           myMarkString +
+          myCadenceString +
           svgPost
             .replace('((unitsPerEm))', unitsPerEm)
             .replace('((fontFamily))', psname) // fontFamily)
@@ -167,6 +170,20 @@ const htmlPost = '</body></html>';
   console.log(htmlPre + svgCollection + htmlPost)
 
 })()
+
+function getGutter( x, w, f ){ // x start, w width, f frequency
+  let h = 1400; 
+  let y = 400;
+  let outstring = "";
+  for( i = 0; i * f < w +8 ; i++ ){
+    outstring += 'M' + ( i * f + x ) + ' ' + h + ' ' + 
+    'l0 -' + h + ' ' + 
+    'l1 0 ' + 
+    'l0 ' + h + ' ' + 
+    'l-1 0 Z '
+  }  
+  return( outstring )
+}
 
 const markerSize = 3
 function getMyMarker (x, y) {
