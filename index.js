@@ -10,7 +10,7 @@ const htmlPre =
 const svgPre =
   "<page size='A4'> <div class='foldmark'><p class='source'>github.com/jrgdrs/GlyphAtlas</p></div> <div class='mirror'> <div class='headbox'>((filename))</div> <div class='bodybox'> <div class='drawing'> <svg xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' viewBox='((bbox))'> <g id='/Letters'>"
 const svgPost =
-  "</g></svg> </div> </div> <div class='footbox'> <div class='footcase'>unitsPerEm: ((unitsPerEm))</div> <div class='footcase'><b>((fontFamily))</b></div> <div class='footcase'>Width: ((advanceWidth))</div> <div class='footcase'>LSB:((leftSB))</div> <div class='footcase'>Fill:((coverX))</div> <div class='footcase'>RSB: ((rightSB)) </div> <div class='footcase'>((version))</div> <div class='footcase'>((glyphID))</div> <div class='footcase'>&nbsp;</div> </div> </div> </page>"
+  "</g></svg> </div> </div> <div class='footbox'> <div class='footcase'>unitsPerEm: ((unitsPerEm))</div> <div class='footcase'><b>((fontFamily))</b></div> <div class='footcase'>Width: ((advanceWidth))</div> <div class='footcase'>LSB:((leftSB))</div> <div class='footcase'>Fill:((coverX))</div> <div class='footcase'>RSB: ((rightSB)) </div> <div class='footcase'>((version))</div> <div class='footcase'>((glyphID))</div> <div class='footcase'>Cadence: ((cadence))</div> </div> </div> </page>"
 const htmlPost = '</body></html>';
 
 // https://stackoverflow.com/questions/11975349/glyph-width-in-open-type-font
@@ -104,7 +104,9 @@ const htmlPost = '</body></html>';
         var myBearingString = '<path class="pCross" d="' + getMyCross( 0, ascender ) + getMyCross( glyphW, ascender ) + '"/>\r\n'
 
         //Cadence
-        var myCadenceString = '<path class="pCadence" d="' + getGutter( 0, glyphW, 17.5 )  + '"/>\r\n'
+        var myCadence = 17.3;
+        var myCadenceString = '<path class="pCadence" d="' + getGutter( 0, glyphW, myCadence )  + '"/>\r\n'
+        var myCadenceCount = glyphW / myCadence;
 
         //Marker
         var myOut = ''
@@ -156,6 +158,7 @@ const htmlPost = '</body></html>';
             .replace('((rightSB))', rightSB)
             .replace('((version))', fontModified)
             .replace('((glyphID))', glyphId + " (" + glyph.unicode + ")" )
+            .replace('((cadence))', myCadenceCount.toFixed(1) + " x " + myCadence )
 
         
       } else {
